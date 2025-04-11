@@ -1,0 +1,28 @@
+volumes:
+  namet_pdata:
+
+services:
+  postgres-compose:
+    image: postgres
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=12345678
+      - POSTGRES_DB=namet
+    ports:
+      - "5432:5432"
+    volumes:
+      - namet_pdata:/var/lib/postgresql/data
+
+  java-app:
+    image: mr3iscuit/namet:latest
+    container_name: namet_backend
+    ports:
+        - "9090:9090"
+    depends_on:
+        - postgres-compose
+    pull_policy: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=compose
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-compose:5432/namet
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=12345678

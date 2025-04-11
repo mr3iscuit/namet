@@ -1,0 +1,22 @@
+spring:
+  sql:
+    init:
+      mode: always
+  application:
+    name: namet
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/namet
+    username: user
+    password: 12345678
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 9090
