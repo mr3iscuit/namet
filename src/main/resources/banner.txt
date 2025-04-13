@@ -1,0 +1,8 @@
+_____   __                      _____
+___  | / /_____ _______ __________  /_
+__   |/ /_  __ `/_  __ `__ \  _ \  __/
+_  /|  / / /_/ /_  / / / / /  __/ /_
+/_/ |_/  \__,_/ /_/ /_/ /_/\___/\__/
+
+${application.title} ${application.version}
+Powered by Spring Boot ${spring-boot.version}
