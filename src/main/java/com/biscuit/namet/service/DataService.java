@@ -1,6 +1,6 @@
 package com.biscuit.namet.service;
 
-import com.biscuit.namet.config.Constants;
+import com.biscuit.namet.config.Telegram;
 import com.biscuit.namet.dto.DataRequest;
 import com.biscuit.namet.dto.DataResponse;
 import com.biscuit.namet.entity.DataEntity;
@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 @Slf4j
 public class DataService {
 
+    private final Telegram telegram;
     private final DataRepository dataRepository;
     @Qualifier("dataMapperImpl")
     private final DataMapper mapper;
@@ -29,7 +30,10 @@ public class DataService {
     @Transactional
     public DataResponse store(DataRequest dataRequest) {
 
-        if (Double.compare( dataRequest.getTemperature(), 27 ) > 0) {
+        if (Double.compare(
+                dataRequest.getTemperature(),
+                27
+        ) > 0) {
             log.info("Temperature is above 27 degrees");
             sendTelegramNotification(dataRequest.toString());
         }
@@ -60,10 +64,13 @@ public class DataService {
     }
 
     private void sendTelegramNotification(String message) {
-        String botToken = Constants.BOT_TOKEN;
-        String chatId = Constants.CHAT_ID;
+        String botToken = telegram.getBotToken();
+        String chatId = telegram.getChatId();
 
-        String url = String.format("https://api.telegram.org/bot%s/sendMessage", botToken);
+        String url = String.format(
+                "https://api.telegram.org/bot%s/sendMessage",
+                botToken
+        );
 
         String jsonPayload = String.format(
                 "{\"chat_id\": \"%s\", \"text\": \"%s\"}",
@@ -76,14 +83,19 @@ public class DataService {
             java.net.http.HttpRequest request = java.net.http.HttpRequest
                     .newBuilder()
                     .uri(java.net.URI.create(url))
-                    .header("Content-Type", "application/json")
+                    .header(
+                            "Content-Type",
+                            "application/json"
+                    )
                     .POST(java.net.http.HttpRequest.BodyPublishers.ofString(jsonPayload))
-                    .build();
+                    .build()
+                    ;
             client.send(
                     request,
                     java.net.http.HttpResponse.BodyHandlers.ofString()
             );
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

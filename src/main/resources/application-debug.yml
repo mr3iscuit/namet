@@ -18,5 +18,11 @@ spring:
       hibernate:
         format_sql: true
 
+telegram:
+  bot:
+    token: ${TELEGRAM_BOT_TOKEN}
+    chatId: ${TELEGRAM_CHAT_ID}
+
+
 server:
   port: 9090
