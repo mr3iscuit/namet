@@ -17,9 +17,9 @@ services:
     image: mr3iscuit/namet:latest
     container_name: namet_backend
     ports:
-        - "9090:9090"
+      - "9090:9090"
     depends_on:
-        - postgres-compose
+      - postgres-compose
     pull_policy: always
     env_file:
       - ./.env.telegram
@@ -28,3 +28,13 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-compose:5432/namet
       - SPRING_DATASOURCE_USERNAME=user
       - SPRING_DATASOURCE_PASSWORD=12345678
+
+  web-app:
+    image: namet-web:latest
+    container_name: namet_web
+    ports:
+      - "8080:8501"
+    depends_on:
+      - java-app
+    environment:
+      - BACKEND_HOST=http://java-app:9090

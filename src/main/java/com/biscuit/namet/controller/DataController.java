@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/data")
 @Slf4j
 @RequiredArgsConstructor
-public class Controller {
+public class DataController {
 
     private final DataService dataService;
 
-    @PostMapping("/store")
+    @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     public DataResponse store(
             @RequestBody DataRequest dataRequest
@@ -32,18 +32,21 @@ public class Controller {
         return dataService.store(dataRequest);
     }
 
-    @GetMapping("/store")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public Page<DataResponse> getPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return dataService.getPage(page, size);
+        return dataService.getPage(
+                page,
+                size
+        );
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/latest")
     @ResponseStatus(HttpStatus.OK)
-    public String hello() {
-        return "Hello, World!";
+    public DataResponse getLatest() {
+        return dataService.getLatest();
     }
 }
